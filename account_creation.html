@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>T.E.S.T. Account Creation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00bfff",
+                        "background-light": "#f3f5f7",
+                        "background-dark": "#0c0f13",
+                        "cyber-deep": "#0D1117",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "technical": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .glass-panel {
+            background: rgba(13, 17, 23, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(0, 191, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 191, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .strength-bar {
+            height: 4px;
+            transition: all 0.3s ease;
+        }
+        .cyber-grid {
+            background-image:
+                linear-gradient(rgba(0, 191, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 191, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen relative overflow-x-hidden">
+<div class="fixed inset-0 cyber-grid pointer-events-none"></div>
+<div class="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="fixed bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-primary/5 blur-[100px] rounded-full pointer-events-none"></div>
+<div class="relative flex flex-col min-h-screen">
+<header class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full z-10">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl">shield_with_house</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-white text-xl font-technical font-bold tracking-widest leading-none">T.E.S.T.</h2>
+<span class="text-[10px] text-primary/70 font-technical uppercase tracking-[0.2em] mt-0.5">Threat Evaluation &amp; Security Tool</span>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-white/60 hover:text-primary text-sm font-medium transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-white/60 hover:text-primary text-sm font-medium transition-colors" href="vulnerability_Scanner.html">Scanner</a>
+<a class="text-white/60 hover:text-primary text-sm font-medium transition-colors" href="Phishing_analyzer.html">Email Analyzer</a>
+</nav>
+<div class="h-6 w-[1px] bg-white/10 hidden md:block"></div>
+<span class="text-white/60 text-sm">Already a member? <a class="text-primary font-bold ml-1" href="index.html">Log In</a></span>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto flex items-center justify-center px-4 py-12 z-10">
+<div class="glass-panel w-full max-w-[560px] rounded-xl p-8 md:p-12">
+<div class="mb-10 text-center">
+<div class="flex justify-center mb-6">
+<div class="p-4 rounded-full bg-primary/5 border border-primary/20">
+<span class="material-symbols-outlined text-5xl text-primary">security</span>
+</div>
+</div>
+<h1 class="text-white font-technical text-3xl md:text-4xl font-bold mb-3">Initialize Identity</h1>
+<p class="text-white/50 text-base">Secure your presence within the Threat Evaluation &amp; Security Tool network.</p>
+</div>
+<form class="space-y-6" autocomplete="off">
+
+  <!-- ===== AUTOFILL TRAP (DO NOT REMOVE) ===== -->
+  <input type="text" name="username" autocomplete="username" class="hidden">
+  <input type="password" name="password" autocomplete="current-password" class="hidden">
+
+  <!-- FULL NAME -->
+  <div class="flex flex-col gap-2">
+    <label class="text-white/80 text-xs font-bold uppercase tracking-widest px-1">
+      Full Name
+    </label>
+    <input
+      type="text"
+      name="full_identity_name"
+      autocomplete="off"
+      placeholder="e.g., Alex Rivers"
+      class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary/50"
+    />
+  </div>
+
+  <!-- ROLE / ORG -->
+  <div class="flex flex-col gap-2">
+    <label class="text-white/80 text-xs font-bold uppercase tracking-widest px-1">
+      Role / Org
+    </label>
+    <input
+      type="text"
+      name="identity_role"
+      autocomplete="off"
+      placeholder="e.g., Security Lead"
+      class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary/50"
+    />
+  </div>
+
+  <!-- SECURE EMAIL -->
+  <div class="flex flex-col gap-2">
+    <label class="text-white/80 text-xs font-bold uppercase tracking-widest px-1">
+      Secure Email
+    </label>
+    <input
+      type="email"
+      name="secure_identity_email"
+      autocomplete="off"
+      placeholder="name@organization.com"
+      class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary/50"
+    />
+  </div>
+
+  <!-- NEURAL KEY (PASSWORD) -->
+  <div class="flex flex-col gap-2">
+    <label class="text-white/80 text-xs font-bold uppercase tracking-widest px-1">
+      Neural Key (Password)
+    </label>
+    <input
+      type="password"
+      name="neural_key"
+      autocomplete="off"
+      placeholder="••••••••••••"
+      class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary/50"
+    />
+  </div>
+
+  <!-- SUBMIT BUTTON -->
+  <button
+    type="submit"
+    class="group relative w-full bg-primary hover:bg-primary/90 text-background-dark font-bold text-base py-5 rounded-lg transition-all active:scale-[0.98]"
+  >
+    Initialize T.E.S.T. Account ⚡
+  </button>
+
+</form>
+
+</div>
+</main>
+<footer class="py-8 px-8 z-10">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-white/30 text-xs">
+<div class="flex items-center gap-6">
+<span>© 2026 T.E.S.T. AI Defense</span>
+<a class="hover:text-primary transition-colors" href="#">Terms of Engagement</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Sanctum</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="uppercase tracking-widest text-[10px]">Neural Link Active</span>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Simulate account creation
+    alert('T.E.S.T. Account initialized successfully!');
+    // Redirect to login page
+    window.location.href = 'Login_access.html';
+});
+</script>
+
+</body></html>
