@@ -1,0 +1,20 @@
+BACKEND-TEST/
+│
+├── config/
+│   └── db.js              → connects to MongoDB database
+│
+├── controllers/
+│   └── phishing.controller.js  → logic for phishing detection
+│
+├── models/
+│   ├── Scan.js            → structure of a "scan" in the database
+│   └── User.js            → structure of a "user" in the database
+│
+├── routes/
+│   ├── auth.routes.js     → login/signup endpoints
+│   └── phishing.routes.js → phishing scan endpoints
+│
+├── app.py / model.py      → Python ML model for phishing detection
+├── phishing_model.pkl     → trained ML model file
+├── vectorizer.pkl         → text vectorizer for the ML model
+└── server.js              → main entry point (this file)
