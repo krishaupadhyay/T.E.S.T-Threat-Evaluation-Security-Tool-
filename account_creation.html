@@ -186,12 +186,36 @@
 </div>
 
 <script>
-document.querySelector('form').addEventListener('submit', function(e) {
+const form = document.querySelector('form');
+
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    // Simulate account creation
-    alert('T.E.S.T. Account initialized successfully!');
-    // Redirect to login page
-    window.location.href = 'Login_access.html';
+
+    // Get all form values
+    const fullName = form.querySelector('input[name="full_identity_name"]').value;
+    const role = form.querySelector('input[name="identity_role"]').value;
+    const email = form.querySelector('input[name="secure_identity_email"]').value;
+    const password = form.querySelector('input[name="neural_key"]').value;
+
+    try {
+        const res = await fetch('http://localhost:5000/api/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullName, role, email, password })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert('T.E.S.T. Account initialized successfully!');
+            window.location.href = 'index.html'; // redirect to login
+        } else {
+            alert(data.message || 'Account creation failed. Try again.');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Server error. Try again later.');
+    }
 });
 </script>
 
