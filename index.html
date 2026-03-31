@@ -369,6 +369,26 @@
         <button id="admin-toggle" title="Switch UI"></button>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- //js added by krisha -->
+
+
+
+
+
     <script>
         // handmade comment: getting elements
         const app = document.getElementById('app-container');
@@ -439,7 +459,8 @@ loginForm.addEventListener('submit', async (e) => {
             const res = await fetch(loginEndpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password }),
+                credentials: "include" 
             });
 
             const data = await res.json();

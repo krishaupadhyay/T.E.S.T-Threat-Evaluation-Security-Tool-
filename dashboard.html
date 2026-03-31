@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
+
             darkMode: "class",
             theme: {
                 extend: {
@@ -133,7 +134,7 @@
 </div>
 <div class="flex items-center gap-6">
 <div class="flex items-center gap-3">
-<button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-primary border border-border-dark">
+<button id="bell-btn" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-primary border border-border-dark">
 <span class="material-symbols-outlined">notifications</span>
 </button>
 <button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-primary border border-border-dark">
@@ -142,10 +143,34 @@
 </div>
 <div class="h-10 w-[1px] bg-border-dark"></div>
 <div class="flex items-center gap-3">
+
+
+
+
+
+
+
+
 <div class="text-right">
-<p class="text-sm font-bold text-white leading-none">Admin_User</p>
-<p class="text-[10px] text-primary font-mono uppercase tracking-widest mt-1">Tier: Enterprise</p>
+<!--********************************** added by krisha  **********************************-->
+<!-- <p class="text-sm font-bold text-white leading-none">Admin_User</p> --> 
+<!-- <p class="text-[10px] text-primary font-mono uppercase tracking-widest mt-1">Tier: Enterprise</p> -->
+
+ <p id="username" class="text-sm font-bold text-white leading-none"></p>
+<p id="role" class="text-[10px] text-primary font-mono uppercase tracking-widest mt-1"></p>
+
+
+<!-- *********************************************************************************************************** -->
 </div>
+
+
+
+
+
+
+
+
+
 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-600 p-[2px]">
 <div class="w-full h-full rounded-full bg-background-dark flex items-center justify-center overflow-hidden">
 <img alt="Cybersecurity analyst user profile avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC27H73i3giOoKmDuVGpSFoaR7nULeNf3JBnGZUP-5HYEtbFKttm90f00NV_ySyAg2qsBg8WO7497M3V90vSBXHDf22MOwU3u-16cysZzLdD82ey6q8PtCFntR17LtAC_tVghfhqpqvpn5u0C1AP0-Cg8AMZr72R-U6enmspUG-gxcfY8DxBA_eJ8ygnSc39hmZoXDqEmEDJ3cSsfsX_YT1g2tv_et7BD7wczvT87ZfvxadahtYqdnLFTrpfnUcbB1rjt_VpQu9smw"/>
@@ -392,5 +417,136 @@
 </div>
 </main>
 </div>
+
+<script>
+    const bellBtn = document.getElementById("bell-btn");
+
+bellBtn.addEventListener("click", async () => {
+    try {
+        const res = await fetch("http://localhost:5000/api/auth/logout", {
+            method: "POST",
+            credentials: "include" // VERY IMPORTANT (cookies)
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Logged out successfully");
+
+            // redirect to login page
+            window.location.href = "index.html"; // your login page
+        } else {
+            alert("Logout failed");
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Error logging out");
+    }
+});
+
+//*************************************load user info************************************************
+async function loadUserInfo() {
+    try {
+        const res = await fetch("http://localhost:5000/api/auth/me", {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            document.getElementById("username").innerText = data.user.name;
+
+            if (data.user.role === "admin") {
+                document.getElementById("role").innerText = "Tier: Admin";
+            } else {
+                document.getElementById("role").innerText = "Tier: User";
+            }
+
+        } else {
+            // not logged in → redirect
+            window.location.href = "index.html";
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+loadUserInfo();
+
+
+// // ************************** LOAD SCAN HISTORY FROM BACKEND**************************************
+// async function loadScanHistory() {
+//     try {
+//         const res = await fetch("http://localhost:5000/api/phishing/history");
+//         const data = await res.json();
+
+//         const tableBody = document.querySelector("tbody");
+//         tableBody.innerHTML = "";
+
+//         data.forEach(scan => {
+//             const row = document.createElement("tr");
+//             row.className = "hover:bg-white/5 transition-colors";
+
+//             const date = new Date(scan.createdAt).toLocaleString();
+//             const risk = scan.result?.risk || 0;
+//             const label = scan.result?.label || "Unknown";
+
+//             //  severity logic
+//             let severity = "LOW";
+//             let color = "emerald";
+
+//             if (risk > 70) {
+//                 severity = "CRITICAL";
+//                 color = "red";
+//             } else if (risk > 40) {
+//                 severity = "HIGH";
+//                 color = "orange";
+//             }
+
+//             row.innerHTML = `
+//                 <td class="px-6 py-4 text-xs font-mono text-slate-400">${date}</td>
+
+//                 <td class="px-6 py-4">
+//                     <p class="text-white text-sm font-medium">${scan.input}</p>
+//                     <p class="text-[10px] text-slate-500">${scan.type}</p>
+//                 </td>
+
+//                 <td class="px-6 py-4">
+//                     <span class="px-2 py-0.5 bg-purple-500/10 text-purple-500 text-[10px] font-bold rounded uppercase">
+//                         ${scan.type}
+//                     </span>
+//                 </td>
+
+//                 <td class="px-6 py-4">
+//                     <span class="flex items-center gap-1 text-${color}-500 text-xs font-bold">
+//                         <span class="w-2 h-2 rounded-full bg-${color}-500"></span>
+//                         ${severity}
+//                     </span>
+//                 </td>
+
+//                 <td class="px-6 py-4 text-xs text-slate-300">
+//                     ${label}
+//                 </td>
+
+//                 <td class="px-6 py-4 text-right">
+//                     <button class="px-3 py-1 bg-white/5 hover:bg-white/10 border border-border-dark rounded text-xs font-bold text-white">
+//                         DETAILS
+//                     </button>
+//                 </td>
+//             `;
+
+//             tableBody.appendChild(row);
+//         });
+
+//     } catch (err) {
+//         console.error("Error loading data:", err);
+//     }
+// }
+
+// //  CALL FUNCTION WHEN PAGE LOADS
+// loadScanHistory();
+</script> 
 
 </body></html>
