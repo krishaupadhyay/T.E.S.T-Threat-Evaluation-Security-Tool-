@@ -1,43 +1,59 @@
-const axios = require("axios");//Axios is used to send HTTP requests.
+const axios = require("axios");
 const Scan = require("../models/Scan");
 
 exports.analyzeEmail = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    const { emailText } = req.body;
+    const { email, deepScan, email_headers } = req.body;
+    const deepScanBool = deepScan === "true" || deepScan === true;
 
-    // 🔴 VALIDATION
-    if (!emailText) {
-      return res.status(400).json({
-        message: "emailText is required"
-      });
+    const hasBody = email && email.trim() !== "";
+    const hasHeaders = email_headers && email_headers.trim() !== "";
+
+    if (!hasBody && !hasHeaders) {
+      return res.status(400).json({ message: "Provide email body or headers" });
     }
+
+    const ipAddress = req.headers["x-forwarded-for"]?.split(",")[0].trim()
+      || req.socket.remoteAddress || "";
+
+    // call Flask AI
     const aiRes = await axios.post("http://127.0.0.1:5001/predict", {
-  email: emailText
-});
-
-    // // 🔹 MOCK AI RESPONSE
-    // const aiRes = {
-    //   data: {
-    //     risk: 75,
-    //     label: "Phishing",
-    //     explanation: "Urgent language and suspicious intent detected"
-    //   }
-    // };
-
-    // ✅ SAVE MATCHING SCHEMA
-    const saved = await Scan.create({
-      type: "email",        // REQUIRED
-      input: emailText,     // REQUIRED
-      result: aiRes.data      // REQUIRED
+      email: email || "",
+      deep_scan: deepScanBool,
     });
-    res.status(200).json(saved);
+
+    // save to DB — including userEmail
+    const saved = await Scan.create({
+      userId: req.user._id,
+      userEmail: req.user.email,    // ← store user's email per scan
+      type: "email",
+      input: email || "",
+      headers: email_headers || "",
+      deepScan: deepScanBool,
+      ipAddress,
+      result: {
+        label: aiRes?.data?.result || "Unknown",
+        confidence: aiRes?.data?.confidence || 0,
+        flags: Array.isArray(aiRes?.data?.flags) ? aiRes.data.flags : [],
+        explanation: aiRes?.data?.explanation || ""
+      }
+    });
+
+    res.status(200).json(saved);   // ← this was missing before
 
   } catch (err) {
-  console.error("ERROR 👉", err.message);
-  res.status(500).json({
-    message: "AI service error",
-    error: err.message
-  });
-}
+    console.error("ERROR:", err.message);
+    res.status(500).json({ message: "AI service error", error: err.message });
+  }
+};
+
+exports.getScans = async (req, res) => {
+  try {
+    const scans = await Scan.find({ userId: req.user._id })
+      .sort({ createdAt: -1 })
+      .limit(20);
+    res.status(200).json(scans);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching scans", error: err.message });
+  }
 };

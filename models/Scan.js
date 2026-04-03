@@ -1,11 +1,20 @@
 const mongoose = require("mongoose");
 
 const ScanSchema = new mongoose.Schema({
-  type: { type: String, required: true }, // "web", "email", "file"
-  input: { type: String, required: true }, // URL, email, filename
-  result: { type: Object, required: true }, // JSON result
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userEmail: { type: String, default: "" },   // ← add this
+  type: { type: String, default: "email" },
+  input: { type: String, default: "" },
+  headers: { type: String, default: "" },
+  deepScan: { type: Boolean, default: false },
+  result: {
+    label: { type: String, default: "" },
+    confidence: { type: Number, default: 0 },
+    flags: { type: [String], default: [] },
+    explanation: { type: String, default: "" }
+  },
+  ipAddress: { type: String, default: "" },
   createdAt: { type: Date, default: Date.now }
 });
 
-// Use the exact same name here
 module.exports = mongoose.model("Scan", ScanSchema);

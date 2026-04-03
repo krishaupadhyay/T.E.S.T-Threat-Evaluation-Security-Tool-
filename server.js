@@ -3,7 +3,7 @@
 const express = require("express");//imports the Express framework.
 const cors = require("cors"); //allow diff port req.. Cross-Origin Resource Sharing.---“Allow other origins to access this API.”
 require("dotenv").config();//nodejslib--allow us to store sensitive info outside of source key
-
+const cookieParser = require("cookie-parser");//to read cookies form browser
 const connectDB = require("./config/db"); // fetch config->db file and run connectdb function
 
 const app = express(); //app now represents our backend server.
@@ -18,9 +18,15 @@ const app = express(); //app now represents our backend server.
 connectDB();
 
 // Middleware
-app.use(cors());
-app.use(express.json());//req.body
+// app.use(cors());
+app.use(cors({
+  origin: "http://localhost:8080", // your frontend
+  credentials: true
+}));
 
+
+app.use(express.json());//req.body
+app.use(cookieParser());//backend can read cookies set by browaser
 // Test route /root 
 app.get("/", (req, res) => {
   res.send("Backend is running!");
@@ -34,6 +40,7 @@ app.use("/api/auth", require("./routes/auth.routes"));
 
 // Start server
 // console.log("BODY:", req.body);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
