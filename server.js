@@ -38,6 +38,8 @@ app.use("/api/phishing", require("./routes/phishing.routes"));//now this route s
 //authentication api
 app.use("/api/auth", require("./routes/auth.routes"));
 
+app.use("/api", require("./routes/webscan.routes")); 
+
 // Start server
 // console.log("BODY:", req.body);
 

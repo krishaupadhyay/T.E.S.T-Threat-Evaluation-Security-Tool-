@@ -57,3 +57,16 @@ exports.getScans = async (req, res) => {
     res.status(500).json({ message: "Error fetching scans", error: err.message });
   }
 };
+
+// ── ADMIN ONLY ─────────────────────────────────────────────────────────────
+// Returns all scans across every user, sorted newest first (max 50)
+exports.getAllScans = async (req, res) => {
+  try {
+    const scans = await Scan.find({})
+      .sort({ createdAt: -1 })
+      .limit(50);
+    res.status(200).json(scans);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching all scans", error: err.message });
+  }
+};
