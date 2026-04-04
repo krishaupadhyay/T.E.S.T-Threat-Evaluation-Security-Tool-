@@ -201,7 +201,8 @@ form.addEventListener('submit', async (e) => {
         const res = await fetch('http://localhost:5000/api/auth/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullName, role, email, password })
+            body: JSON.stringify({ fullName, role, email, password }),
+            credentials: "include" 
         });
 
         const data = await res.json();

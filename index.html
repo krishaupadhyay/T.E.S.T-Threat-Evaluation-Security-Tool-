@@ -318,10 +318,10 @@
                     </div>
                     <div class="input-wrapper">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                         <input id="email" type="email" placeholder="name@organization.com" required autocomplete="off">
+                        <!-- ✅ Added id="email" back (needed by backend JS) -->
+                        <input id="email" type="email" placeholder="name@organization.com" required autocomplete="off">
                     </div>
                 </div>
-
 
                 <div class="form-group">
                     <div class="form-label-row">
@@ -369,25 +369,7 @@
         <button id="admin-toggle" title="Switch UI"></button>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- //js added by krisha -->
-
-
-
-
 
     <script>
         // handmade comment: getting elements
@@ -442,114 +424,83 @@
         });
 
         // Form submission
-      // Form submission
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+        let pendingEmail = "";
 
-    const email = document.getElementById('email').value;
-    const password = passwordInput.value;
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-       const isAdminPage = app.classList.contains('theme-admin');
-     // Choose endpoint based on role
-        const loginEndpoint = isAdminPage 
-            ? 'http://localhost:5000/api/auth/admin-login' 
-            : 'http://localhost:5000/api/auth/user-login'; // user login
+            const email = document.getElementById('email').value;
+            const password = passwordInput.value;
+            const isAdminPage = app.classList.contains('theme-admin');
 
-        try {
-            const res = await fetch(loginEndpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-                credentials: "include" 
-            });
+            const loginEndpoint = isAdminPage
+                ? 'http://localhost:5000/api/auth/admin-login'
+                : 'http://localhost:5000/api/auth/user-login';
 
-            const data = await res.json();
+            try {
+                const res = await fetch(loginEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                    credentials: "include"
+                });
 
-            if (data.success) {
-                alert('Login successful!');
+                const data = await res.json();
 
-                // Redirect based on role
-                if (data.role === 'admin') {
+                if (data.success) {
+                    pendingEmail = data.email;
+                    showOTPScreen();   // show OTP input
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (err) {
+                alert('Server error. Try again later.');
+            }
+        });
+
+        function showOTPScreen() {
+            document.querySelector('.login-card').innerHTML = `
+                <div class="ai-shield">OTP VERIFICATION</div>
+                <p style="color: #8b96a5; font-size: 0.85rem; margin-bottom: 20px;">
+                    A 6-digit code was sent to your email.
+                </p>
+                <div class="form-group">
+                    <label>Enter OTP</label>
+                    <div class="input-wrapper">
+                        <input id="otp-input" type="text" maxlength="6" placeholder="000000"
+                            style="text-align: center; font-size: 1.5rem; letter-spacing: 8px;">
+                    </div>
+                </div>
+                <button class="submit-btn" onclick="verifyOTP()">Verify OTP</button>
+                <p style="margin-top: 15px; font-size: 0.75rem; color: #8b96a5;">
+                    Didn't receive it? <a href="#" onclick="location.reload()" style="color: var(--accent-color);">Try again</a>
+                </p>
+            `;
+        }
+
+        async function verifyOTP() {
+            const otp = document.getElementById('otp-input').value.trim();
+
+            try {
+                const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: pendingEmail, otp }),
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
                     window.location.href = 'dashboard.html';
                 } else {
-                    window.location.href = 'dashboard.html';
+                    alert(data.message || 'Invalid OTP');
                 }
-            } else {
-                alert(data.message || 'Login failed');
+            } catch (err) {
+                alert('Server error. Try again later.');
             }
-
-        } catch (err) {
-            console.error(err);
-            alert('Server error. Try again later.');
         }
-    });
-
-
     </script>
-    <!-- <script>
-    // Getting elements
-    const app = document.getElementById('app-container');
-    const title = document.getElementById('page-title');
-    const btnText = document.getElementById('btn-text');
-    const btnIcon = document.getElementById('btn-icon');
-    const loginForm = document.getElementById('login-form');
-    const passwordInput = document.getElementById('password');
-    const eyeIcon = document.getElementById('eye-icon');
-
-    // Determine if this page is for admin or user
-    const isAdminPage = app.classList.contains('theme-admin');
-
-    // Password visibility toggle
-    eyeIcon.addEventListener('click', () => {
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-        } else {
-            passwordInput.type = 'password';
-            eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
-        }
-    });
-
-    // Login form submission
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById('email').value.trim();
-        const password = passwordInput.value;
-
-        // Choose endpoint based on role
-        const loginEndpoint = isAdminPage 
-            ? 'http://localhost:5000/api/auth/admin-login' 
-            : 'http://localhost:5000/api/auth/user-login'; // user login
-
-        try {
-            const res = await fetch(loginEndpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await res.json();
-
-            if (data.success) {
-                alert('Login successful!');
-
-                // Redirect based on role
-                if (data.role === 'admin') {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    window.location.href = 'dashboard.html';
-                }
-            } else {
-                alert(data.message || 'Login failed');
-            }
-
-        } catch (err) {
-            console.error(err);
-            alert('Server error. Try again later.');
-        }
-    });
-</script> -->
 
 </body>
 </html>
