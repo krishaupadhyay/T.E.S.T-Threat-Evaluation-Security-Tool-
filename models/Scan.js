@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ScanSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  userEmail: { type: String, default: "" },   // ← add this
+  userEmail: { type: String, default: "" },  
   type: { type: String, default: "email" },
   input: { type: String, default: "" },
   headers: { type: String, default: "" },
