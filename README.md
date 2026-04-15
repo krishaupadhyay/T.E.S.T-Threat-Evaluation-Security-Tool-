@@ -1,73 +1,198 @@
-#Welcome to my Project
+#  T.E.S.T. — Threat Evaluation Security Tool  
+**AI-Powered Cybersecurity Platform for Beginners and Small Organizations**
 
-## Project info
+---
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 📌 Overview
 
-## How can I edit this code?
+T.E.S.T. (Threat Evaluation Security Tool) is a web-based cybersecurity platform designed to make threat detection simple, accessible, and practical.
 
-There are several ways of editing your application.
+It combines machine learning, natural language processing, and web security analysis into a single dashboard. The goal is to help users identify threats, understand them clearly, and take appropriate action without needing deep technical knowledge.
 
-**Use Lovable**
+This project is especially useful for students, beginners, and small organizations who find existing tools too complex or expensive.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🎯 Key Features
 
-**Use your preferred IDE**
+### 📧 Email Phishing Analyzer (EPA)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This module analyzes email content to detect phishing attempts using a machine learning model based on TF-IDF and Logistic Regression (~92% accuracy).
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**The system checks for:**
+- Fake or misleading domains  
+- Suspicious links  
+- Urgency or scam-related language  
 
-Follow these steps:
+**It provides:**
+- Risk score (0–95%)  
+- Risk level (Low / Medium / High)  
+- Highlighted suspicious content  
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 🌐 Web Vulnerability Scanner (WVS)
 
-# Step 3: Install the necessary dependencies.
-npm i
+This module scans websites safely and checks for common security issues.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+**It detects:**
+- SQL Injection  
+- Cross-Site Scripting (XSS)  
+- Missing security headers (CSP, HSTS, X-Frame-Options)  
+
+**The output includes:**
+- Severity levels (Low → Critical)  
+- Simple explanations  
+- Suggested fixes  
+
+---
+
+### 🧠 AI Intelligence Core
+
+This is the core logic of the system. It processes inputs from both modules using ML and NLP techniques.
+
+**It generates:**
+- Risk scores  
+- Clear explanations  
+- Practical recommendations  
+
+---
+
+### 📊 Unified Dashboard
+
+All features are available in one place through a simple and clean interface.  
+Users can run scans, view results, and understand outputs without confusion.
+
+---
+
+### 🔐 Authentication System
+
+- Secure login with email and password  
+- OTP-based verification  
+- Encrypted credential handling  
+
+---
+
+## 🏗️ System Architecture
+
+```text
+Frontend (HTML + Tailwind CSS)
+        ↓
+Backend (Node.js + Express.js)
+        ↓
+AI Service (Python Flask)
+        ↓
+Database (MongoDB)
 ```
 
-**Edit a file directly in GitHub**
+- Modular three-layer architecture  
+- Communication via REST APIs  
+- Scalable and maintainable design  
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 🛠️ Tech Stack
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Category            | Technology Used |
+|--------------------|----------------|
+| Frontend           | HTML, CSS, Tailwind CSS |
+| Backend            | Node.js, Express.js |
+| AI Service         | Python, Flask |
+| Machine Learning   | Logistic Regression, TF-IDF |
+| Web Scanning       | Pre-trained Models |
+| Database           | MongoDB |
+| Authentication     | JWT, OTP |
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## ⚙️ Installation and Setup
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Clone Repository
 
-## How can I deploy this project?
+```bash
+git clone https://github.com/krishaupadhyay/TEST-Final-project.git
+cd TEST-Final-project
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+### Backend Setup
 
-Yes, you can!
+```bash
+cd backend
+npm install
+npm start
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### AI Service Setup
+
+```bash
+cd ai-service
+pip install -r requirements.txt
+python app.py
+```
+
+---
+
+### Frontend
+
+```bash
+# Open directly
+index.html
+
+# OR use Live Server (recommended)
+```
+
+---
+
+## 📈 Performance
+
+- Phishing detection accuracy: ~92%  
+- Email analysis time: Few seconds  
+- Web scan time: 15–25 seconds  
+- Fast dashboard loading with real-time updates  
+
+---
+
+## 🧪 Testing
+
+The project includes:
+
+- Unit Testing  
+- Integration Testing  
+- System Testing  
+
+Each module was tested individually and then validated as a complete system using real-world scenarios.
+
+---
+
+## ⚠️ Challenges Solved
+
+- Improved overconfident ML predictions using probability calibration  
+- Optimized long email handling with smart input limits  
+- Resolved backend ↔ AI service communication issues (CORS)  
+- Improved detection accuracy through better dataset selection  
+
+---
+
+## 🔮 Future Improvements
+
+- Support for more OWASP vulnerabilities  
+- Browser extension for real-time detection  
+- PDF report generation  
+- Integration with threat intelligence APIs  
+- Dashboard with scan history and analytics  
+
+---
+
+## 👥 Team
+
+- Prachi Rana  
+- Krisha Upadhyay  
+- Nandan Vakani  
+- Harshil Patel  
+
+**Guided by:** Prof. Ashish Katira  
+
