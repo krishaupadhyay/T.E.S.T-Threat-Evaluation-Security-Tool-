@@ -187,6 +187,16 @@ Each module was tested individually and then validated as a complete system usin
 
 ---
 
+## 📸 Screenshots (Add Your Images Here)
+
+```markdown
+![Dashboard](./screenshots/dashboard.png)
+![Phishing Result](./screenshots/phishing.png)
+![Web Scan](./screenshots/webscan.png)
+```
+
+---
+
 ## 👥 Team
 
 - Prachi Rana  
@@ -195,4 +205,3 @@ Each module was tested individually and then validated as a complete system usin
 - Harshil Patel  
 
 **Guided by:** Prof. Ashish Katira  
-
